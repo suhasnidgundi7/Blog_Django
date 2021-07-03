@@ -62,80 +62,120 @@
         </div>
     </article>
     
-    <section class="section about-section gray-bg" id="about">
-        <div class="container">
-            <div class="row align-items-center flex-row-reverse">
-                <div class="col-lg-6">
-                    <div class="about-text go-to">
-                        <a href="{% url 'show_profile_page' post.author.profile.id %}" class="dark-color h3">{{ post.author.username }}</a>
-                        <br>
-                        <p>{{ post.author.profile.bio|safe }}</p>
+    {% if post.author.profile %}
+        <section class="section about-section gray-bg" id="about">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-lg-6">
+                        <div class="about-text go-to">
+                            <a href="{% url 'show_profile_page' post.author.profile.id %}" class="dark-color h3">{{ post.author.username }}</a>
+                            <br>
+                            <p>{{ post.author.profile.bio|safe }}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="about-avatar">
+                            <img src="{{ post.author.profile.profile_pic.url }}" width="300" height="300" title="" alt="{{ post.author.username }}">
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="about-avatar">
-                        <img src="{{ post.author.profile.profile_pic.url }}" width="300" height="300" title="" alt="{{ post.author.username }}">
-                    </div>
-                </div>
-            </div>
-            <div class="counter">
-                <div class="row">
-                {% if post.author.profile.facebook_url %}
-                    <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
-                                <a href="{{ post.author.profile.facebook_url }}">
+                <div class="counter">
+                    <div class="row">
+                    {% if post.author.profile.facebook_url %}
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                    <a href="{{ post.author.profile.facebook_url }}">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fas fa-circle fa-stack-2x"></i>
+                                            <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                <p class="m-0px font-w-600  " href="">Facebook</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if post.author.profile.twitter_url %}
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <a href="{{ post.author.profile.twitter_url }}">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
-                                        <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
                                     </span>
                                 </a>
-                            <p class="m-0px font-w-600  " href="">Facebook</p>
+                                <p class="m-0px font-w-600">Twitter</p>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-                {% if post.author.profile.twitter_url %}
-                    <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
-                            <a href="{{ post.author.profile.twitter_url }}">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                            <p class="m-0px font-w-600">Twitter</p>
+                    {% endif %}
+                    {% if post.author.profile.instagram_url %}
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <a href="{{ post.author.profile.instagram_url }}">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                                <p class="m-0px font-w-600">Instagram</p>
+                            </div>
                         </div>
-                    </div>
-                {% endif %}
-                {% if post.author.profile.instagram_url %}
-                    <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
-                            <a href="{{ post.author.profile.instagram_url }}">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                            <p class="m-0px font-w-600">Instagram</p>
+                    {% endif %}
+                    {% if post.author.profile.pinterest_url %}
+                        <div class="col-6 col-lg-3">
+                            <div class="count-data text-center">
+                                <a href="{{ post.author.profile.pinterest_url }}">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                                <p class="m-0px font-w-600">Pinterest</p>
+                            </div>
                         </div>
+                    {% endif %}
                     </div>
-                {% endif %}
-                {% if post.author.profile.pinterest_url %}
-                    <div class="col-6 col-lg-3">
-                        <div class="count-data text-center">
-                            <a href="{{ post.author.profile.pinterest_url }}">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fas fa-circle fa-stack-2x"></i>
-                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                            <p class="m-0px font-w-600">Pinterest</p>
-                        </div>
-                    </div>
-                {% endif %}
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    {% endif %}
+
+    <div class="container">
+        <div class="be-comment-block">
+            <h1 class="comments-title">Comments</h1>
+            {% if not post.comments.all %}
+                No Comments Yet... <a class="btn btn-info rounded-pill" href="{% url 'add_comment' post.pk %}">Add One</a>
+                <br><br>
+            {% else %}
+                {% for comments in post.comments.all %}
+                    <div class="be-comment">
+                        <div class="be-img-comment">
+                            <a href="blog-detail-2.html">
+                                <img src="{% static 'blog/images/avatar.png' %}" alt="" class="be-ava-comment">
+                            </a>
+                        </div>
+                        <div class="be-comment-content">
+            
+                            <span class="be-comment-name">
+                                <h5>{{ comments.name }}</h5>
+                            </span>
+                            <span class="be-comment-time">
+                                <i class="fas fa-clock"></i>
+                                {{ comments.date_added }}
+                            </span>
+            
+                            <p class="be-comment-text">
+                                {{ comments.body }}
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %}
+                    <div class="row">
+                        <a href="{% url 'add_comment' post.pk %}" class="btn btn-primary pull-right rounded-pill">Add Comment</a>
+                    </div>
+                    <br><br>
+            {% endif %}
+        
 
     {% if user.is_authenticated %}
 

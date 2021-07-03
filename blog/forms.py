@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Category
+from .models import Comment, Post, Category
 
 choices = Category.objects.all().values_list('name', 'name')
 
@@ -18,6 +18,14 @@ class AddPostForm(forms.ModelForm):
             'author': forms.TextInput(attrs={'id': 'elder', 'value': '', 'type': 'hidden',}),
             'category': forms.Select(choices=choice_list),
 
+        }
+class AddCommentForm(forms.ModelForm):
+    class Meta: 
+        model = Comment
+        fields = ('name', 'body',)
+
+        widgets = {
+            
         }
 
 class UpdatePostForm(forms.ModelForm):
