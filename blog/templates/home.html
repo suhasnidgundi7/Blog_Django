@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block header-image %}{% static 'blog/images/home-bg.jpg' %}{% endblock header-image %}
+
+{% block content %}
+
+    {% if cat_menu %}
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <div class="btn-group">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Category
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+
+                            {% for item in cat_menu %}
+                                <li><a class="dropdown-item" href="{% url 'category' item|slugify %}">{{ item }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+        {% for post in object_list %}        
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a href="{% url 'post_detail' post.pk %}">
+                        <h2 class="post-title">{{ post.title }}</h2>
+                        <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+                    </a>
+                    <p class="post-meta">
+                        Posted by
+                        <a href="#!">{{ post.author }}</a>
+                        on {{ post.post_date }}
+                    </p>
+                    <p class="post-meta">
+                        Category by
+                        <a href="{% url 'category' post.category|slugify %}">{{ post.category }}</a>
+                    </p>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+                <!-- Pager-->
+                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="{% url 'older_post' %}">Older Posts →</a></div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}

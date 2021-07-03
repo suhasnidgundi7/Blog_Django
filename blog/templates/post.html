@@ -1,0 +1,186 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block header-image %}{% static 'blog/images/post-bg.jpg' %}{% endblock header-image %}
+{% block article-heading %}{{ post.title }}{% endblock article-heading %}
+{% block article-subheading %}{{ post.subtitle }}{% endblock article-subheading %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'blog/css/post.css' %}">
+
+    {% if user.is_authenticated %}
+    
+    {% else %}
+
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="my-5">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Please Login!</strong> You should to use all feature.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    {% endif %}
+
+    <!-- Post Content-->
+    <article class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <p>{{ post.body|safe }}</p>
+                </div>
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <form action="{% url 'like_post' post.pk %}" method="POST">
+                        {% csrf_token %}
+
+                        {% if user.is_authenticated %}
+                            {% if liked %}
+                                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-thumbs-down"></i> - {{ total_likes }}
+                                </button>
+                            {% else %}
+                                <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-success btn-sm">
+                                    <i class="fas fa-thumbs-up"></i> - {{ total_likes }}
+                                </button>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn btn-warning btn-sm">
+                                Total Likes - {{ total_likes }} 
+                            </a>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </article>
+    
+    <section class="section about-section gray-bg" id="about">
+        <div class="container">
+            <div class="row align-items-center flex-row-reverse">
+                <div class="col-lg-6">
+                    <div class="about-text go-to">
+                        <a href="{% url 'show_profile_page' post.author.profile.id %}" class="dark-color h3">{{ post.author.username }}</a>
+                        <br>
+                        <p>{{ post.author.profile.bio|safe }}</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="about-avatar">
+                        <img src="{{ post.author.profile.profile_pic.url }}" width="300" height="300" title="" alt="{{ post.author.username }}">
+                    </div>
+                </div>
+            </div>
+            <div class="counter">
+                <div class="row">
+                {% if post.author.profile.facebook_url %}
+                    <div class="col-6 col-lg-3">
+                        <div class="count-data text-center">
+                                <a href="{{ post.author.profile.facebook_url }}">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            <p class="m-0px font-w-600  " href="">Facebook</p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if post.author.profile.twitter_url %}
+                    <div class="col-6 col-lg-3">
+                        <div class="count-data text-center">
+                            <a href="{{ post.author.profile.twitter_url }}">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                            <p class="m-0px font-w-600">Twitter</p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if post.author.profile.instagram_url %}
+                    <div class="col-6 col-lg-3">
+                        <div class="count-data text-center">
+                            <a href="{{ post.author.profile.instagram_url }}">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-instagram fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                            <p class="m-0px font-w-600">Instagram</p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if post.author.profile.pinterest_url %}
+                    <div class="col-6 col-lg-3">
+                        <div class="count-data text-center">
+                            <a href="{{ post.author.profile.pinterest_url }}">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                            <p class="m-0px font-w-600">Pinterest</p>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if user.is_authenticated %}
+
+        <style type="text/css">
+            .svg-inline--fa {
+                font-size: 27px;
+            }
+        </style>
+        
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="{% url 'update_post' post.pk %}" class="btn btn-secondary rounded-pill" type="submit"><i class="fas fa-edit"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="{% url 'delete_post' post.pk %}" class="btn btn-danger rounded-pill" type="submit"><i class="fas fa-trash-alt"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="{% url 'home' %}" class="btn btn-info rounded-pill"><i class="fas fa-arrow-circle-left"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+    {% else %}
+    
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="{% url 'home' %}" class="btn btn-info"><i class="fas fa-arrow-circle-left"></i>&ensp;Back</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+    {% endif %}
+
+{% endblock content %}
