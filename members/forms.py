@@ -38,5 +38,9 @@ class CreateUserProfilePageForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('bio', 'profile_pic', 'website_url', 'facebook_url', 'twitter_url', 'instagram_url', 'pinterest_url')
+class UpdateUserProfilePageForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('bio', 'profile_pic', 'website_url', 'facebook_url', 'twitter_url', 'instagram_url', 'pinterest_url')
 
     

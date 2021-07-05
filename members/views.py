@@ -5,10 +5,16 @@ from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm, User
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
 from django.views.generic.edit import CreateView, UpdateView
-from .forms import SignUpForm, UserEditForm, CreateUserProfilePageForm
+from .forms import SignUpForm, UserEditForm, CreateUserProfilePageForm, UpdateUserProfilePageForm
 from blog.models import Profile
 
 # Create your views here.
+class EditProfilePageView(generic.UpdateView):
+    model = Profile
+    form_class = UpdateUserProfilePageForm
+    template_name = "registration/edit_profile_page.html"
+    success_url = reverse_lazy('home')
+
 class CreateProfilePageView(generic.CreateView):
     model = Profile
     form_class = CreateUserProfilePageForm
